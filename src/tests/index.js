@@ -1,21 +1,29 @@
 const AXIOS = require("axios");
+const { application } = require("express");
 const CONFIG = require("../config.json");
 
 class Tests {
-    constructor() {
+    constructor(OAuth) {
         this.axios = AXIOS.default;
-    }
-    
-    async get() {
-        const res = await this.axios.post("https://api.spotify.com/v1/tracks/2YSCvCiVVfoWsZPevGKH2k?market=ES", {}, {
-            headers: {
+        this.auth = OAuth;
+        this.header = {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization": `Bearer BQA9_utRslPGrXXZEVLdgot2VJX69PwRroj_JEk8vwFJZNmt5qZ7IpkRc1EZLq5RSQzi7T8d06xHb4uIwCg1mEklY4OOvZEQ3i0GzMzeTarJSg9WL2KZx0O0cIOR214AaqBkwS-9eJ58StsgMDQ5TRStsGnwUMVnEWUnWR-Vk6_EO0FoER3xrmiFv9NfK9KRpuQSoY_x9E5NhmbNWhU5AdiLslyj-DsoXFMDAkeEWNHpnxvNEFKyxQI7veBenrvXIQ"
-            }
-        });
+            "Authorization": `Bearer ${this.auth}`
+        }
+    }
+    
+    //  Eventually we will add constraints such as duration limit, explicit content, etc. \\ 
+    async get_track(track_id, market_type) {
+        this.axios.get(`https://api.spotify.com/v1/tracks/${track_id}?market=${market_type}`, {
+            headers: this.header
+        }).then((response) => console.log(response.data))
+    }
 
-        console.log(res.data);
+    async add_tracks(playlist_id, track_list) {
+        this.axios.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track_list.join("%2C")}`, {}, {
+            headers: this.header
+        }).then((response) => console.log("Songs: ", response.statusText))
     }
 }
 
