@@ -29,7 +29,7 @@ class Tests {
     async get_track_by_name(track_name, track_artist) {
         this.axios.get(`https://api.spotify.com/v1/search?q=track:${track_name.split(" ").join("%20")}%20artist:${track_artist.split(" ").join("%20")}&type=track`, {
             headers: this.header
-        }).then((response) => console.log(response.data)).catch((err) => console.error("Failed to get track by name with an error code of", err.response.status))
+        }).then((response) => console.log(response.data.tracks.items[0])).catch((err) => console.error("Failed to get track by name with an error code of", err.response.status))
     }
 }
 
