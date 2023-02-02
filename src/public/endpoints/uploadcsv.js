@@ -30,7 +30,7 @@ class UploadCSV extends API {
         // Create random file name
         await file.mv(`../src/public/csv/${file.md5}.csv`);
 
-        return res.send("File uploaded.");
+        return res.send(`${file.md5}`);
     }
 }
 
