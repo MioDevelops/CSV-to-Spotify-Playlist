@@ -1,5 +1,5 @@
 const AXIOS = require("axios");
-const { application } = require("express");
+const { application, response } = require("express");
 const CONFIG = require("../config.json");
 
 class Tests {
@@ -32,6 +32,18 @@ class Tests {
             headers: this.header
         }).then((response) => console.log(response.data.tracks.items[0])).catch((err) => console.error("Failed to get track by name with an error code of", err.response.status))
     }
+
+    async add_track_to_queue(track_uri, device_id) {
+        this.axios.post(`https://api.spotify.com/v1/me/player/queue?uri=${track_uri}&device_id=${device_id}`, {}, {
+            headers: this.header
+        }).then((response) => console.log(response.data)).catch((err) => console.log(err.response))
+    }
+
+    async get_available_devices() {
+        this.axios.get(`https://api.spotify.com/v1/me/player/devices`, {
+            headers: this.header
+        }).then((response) => console.log("Devices", response.data)).catch((err) => console.log(err))
+    } 
 }
 
 module.exports = Tests;
