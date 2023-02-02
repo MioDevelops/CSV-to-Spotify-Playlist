@@ -12,5 +12,4 @@ TESTS_INSTANCE.get();
 const EVENTS = require("events");
 const EVENT_EMITTER = new EVENTS.EventEmitter();
 
-EVENT_EMITTER.on("end", () => {
-});
+EVENT_EMITTER.on("end", () => { });
