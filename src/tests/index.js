@@ -17,13 +17,13 @@ class Tests {
     async get_track(track_id, market_type) {
         this.axios.get(`https://api.spotify.com/v1/tracks/${track_id}?market=${market_type}`, {
             headers: this.header
-        }).then((response) => console.log(response.data))
+        }).then((response) => console.log(response.data)).catch((err) => console.log("Failed to get track"))
     }
 
     async add_tracks(playlist_id, track_list) {
         this.axios.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track_list.join("%2C")}`, {}, {
             headers: this.header
-        }).then((response) => console.log("Songs: ", response.statusText))
+        }).then((response) => console.log("Songs: ", response.statusText)).catch((err) => console.log("Failed to add tracks"))
     }
 }
 
