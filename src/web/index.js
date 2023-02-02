@@ -1,4 +1,5 @@
 const FS = require("fs");
+const FILEUPLOAD = require("express-fileupload");
 
 const CONFIG = require("../config.json");
 
@@ -14,6 +15,8 @@ class Web {
         this.app.use(this.express.json());
 
         this.app.use(this.express.static("public/web"));
+
+        this.app.use(FILEUPLOAD());
 
         FS.readdirSync(__dirname + "/../public/endpoints/").forEach((file) => {
             if (file.startsWith("_")) return;

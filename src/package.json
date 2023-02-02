@@ -4,12 +4,13 @@
     "description": "csv_spotify",
     "main": "main.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Mio, Hoofer",
     "license": "MIT",
     "dependencies": {
+        "axios": "^0.18.0",
         "express": "^4.18.2",
-        "axios": "^0.18.0"
+        "express-fileupload": "^1.4.0"
     }
 }
