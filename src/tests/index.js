@@ -14,8 +14,9 @@ class Tests {
     }
     
     //  Eventually we will add constraints such as duration limit, explicit content, etc. \\ 
-    async get_track(track_id, market_type) {
-        this.axios.get(`https://api.spotify.com/v1/tracks/${track_id}?market=${market_type}`, {
+    async get_track(track_id) {
+        // Market is set to ES on default \\
+        this.axios.get(`https://api.spotify.com/v1/tracks/${track_id}?market=ES`, {
             headers: this.header
         }).then((response) => console.log(response.data)).catch((err) => console.error("Failed to get track with an error code of", err.response.status))
     };
