@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV to Spotify Playlist | Home</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <div class="header">
+    	<img class="icon" src="Spotify.svg">
+    	<h1>CSV to Spotify Playlist</h1>
+    	<h2>Not endorsed or approved by Spotify</h2>
+    </div>
+		
+    <div class="content">
+        <div id="auth-button" class="button">Authenticate Spotify</div>
+		<div id="upload-button" class="button">Upload CSV</div>
+		<div id="example-button" class="button">CSV Example</div>
+        <input id="csv" type="file" id="csv" name="csv" accept=".csv">
+    	<span class="gradient-blur"></span>
+	</div>
+
+	<div class="content" id="alert" style="position: absolute; z-index: 5; height: 100%; display: none">
+		<div class="alert-content" id="alert">
+			<p id="alert-close">X</p>
+
+			<h3 id="alert-text">This is alert text</h3>
+		</div>
+	</div>
+</body>
+</html>

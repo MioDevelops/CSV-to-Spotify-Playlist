@@ -6,13 +6,22 @@ const WEB_INSTANCE = new WEB();
 WEB_INSTANCE.deploy();
 
 const TESTS = require("./tests");
-const TESTS_INSTANCE = new TESTS(CONFIG.test.auth);
+const spotify = new TESTS(process.env.OAuth1);
 
-TESTS_INSTANCE.get_track("0eGsygTp906u18L0Oimnem");
-TESTS_INSTANCE.add_tracks("0F4OFi7fSAngLsa1Nnl5wB", ["spotify:track:0eGsygTp906u18L0Oimnem", "spotify:track:2Cqr74oA90iffydKmgjwhp"])
-TESTS_INSTANCE.get_track_by_name("Born Without a Heart", "Faouzia")
-TESTS_INSTANCE.add_track_to_queue("spotify:track:0eGsygTp906u18L0Oimnem", "603b97a69282a424a7629370a3fea072023cda54")
-TESTS_INSTANCE.get_available_devices()
+async function test() {
+	let user = await spotify.get_user_info();
+	
+	if(!(user.response.status === 200))
+		return console.log("Failed to get user information")
+
+	let playlist = await spotify.create_playlist(user.response.data.id, "dev test", true, true, "testing");
+	console.log(playlist)
+
+	let songs = ["spotify:track:2PWTZV5znjLtZC5T1EVJvL", "spotify:track:6EgwlXnFrfkFqOKqY3dqki"]
+	spotify.add_track_to_playlist(playlist.response.data.id, songs)
+}
+
+test()
 
 // Prevent the process from closing by using an emitter
 const EVENTS = require("events");

@@ -12,38 +12,76 @@ class Tests {
             "Authorization": `Bearer ${this.auth}`
         }
     }
-    
-    //  Eventually we will add constraints such as duration limit, explicit content, etc. \\ 
-    async get_track(track_id) {
-        // Market is set to ES on default \\
-        this.axios.get(`https://api.spotify.com/v1/tracks/${track_id}?market=ES`, {
-            headers: this.header
-        }).then((response) => console.log(response.data)).catch((err) => console.error("Failed to get track with an error code of", err.response.status))
-    };
 
-    async add_tracks(playlist_id, track_list) {
-        this.axios.post(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track_list.join("%2C")}`, {}, {
+    async check_oauth() {
+        let res = this.axios.get(`https://accounts.spotify.com/api/token`, {
             headers: this.header
-        }).then(() => console.log("Successfully added songs to desired playlist!")).catch((err) => console.error("Failed to add tracks with an error code of", err.response.status))
-    };
+        }).catch((err) => {
+            console.log("Failed to get token status")
+        })
+
+        console.log(res);
+    }
+    
+    //  Eventually we will add constraints such as duration limit, explicit content, etc. \\
+    async add_track_to_playlist(playlist_id, track_uris) {
+		let timeout = 0;
+		
+		if(track_uris.length > 30) {
+			console.log("creating timeout..")
+			timeout = 500;
+		}
+	}
 
     async get_track_by_name(track_name, track_artist) {
-        this.axios.get(`https://api.spotify.com/v1/search?q=track:${track_name.split(" ").join("%20")}%20artist:${track_artist.split(" ").join("%20")}&type=track`, {
+        let res = this.axios.get(`https://api.spotify.com/v1/search?q=track:${track_name.split(" ").join("%20")}%20artist:${track_artist.split(" ").join("%20")}&type=track`, {
             headers: this.header
-        }).then((response) => console.log(response.data.tracks.items[0])).catch((err) => console.error("Failed to get track by name with an error code of", err.response.status))
-    }
+        }).then((response) => {
+			let song_info = response.data.tracks.items[0]
+			var data = {
+				name: song_info.name,
+				artist: song_info.artists[0].name,
+				duration: song_info.duration_ms,
+				explicit: song_info.explicit,
+				uri: song_info.uri
+			}
+			
+			return data;
+		}).catch((error) => {
+			return { response: { status: error.response.status, data: null }}
+		})
+    
+		return res;
+	}
 
-    async add_track_to_queue(track_uri, device_id) {
-        this.axios.post(`https://api.spotify.com/v1/me/player/queue?uri=${track_uri}&device_id=${device_id}`, {}, {
-            headers: this.header
-        }).then((response) => console.log(response.data)).catch((err) => console.log(err.response))
-    }
+	async get_user_info() {
+		let res = await this.axios.get("https://api.spotify.com/v1/me", {
+			headers: this.header
+		}).then((response) => {
+			return { response: { status: response.status, data: response.data }}
+		}).catch((error) => {
+			return { response: { status: error.response.status, data: null }}
+		})
 
-    async get_available_devices() {
-        this.axios.get(`https://api.spotify.com/v1/me/player/devices`, {
-            headers: this.header
-        }).then((response) => console.log("Devices", response.data)).catch((err) => console.log(err))
-    } 
+		return res;
+	}
+
+    async create_playlist(current_user_id, name, public_playlist, desc) {
+		 let res = await this.axios.post(`https://api.spotify.com/v1/users/${current_user_id}/playlists`, {}, {
+            headers: this.header,
+			data: {
+				"name": name,
+				"description": desc,
+				"public": public_playlist
+			}
+        }).then((response) => {
+			return { response: { status: response.status, data: response.data }}
+		}).catch((error) => {
+			return { response: { status: error.response.status, data: null }}
+		})
+
+		return res;
+    }
 }
 
 module.exports = Tests;

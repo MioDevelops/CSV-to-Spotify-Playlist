@@ -14,7 +14,7 @@ class Web {
     deploy() {
         this.app.use(this.express.json());
 
-        this.app.use(this.express.static("public/web"));
+        this.app.use(this.express.static("public/web/"));
 
         this.app.use(FILEUPLOAD());
 

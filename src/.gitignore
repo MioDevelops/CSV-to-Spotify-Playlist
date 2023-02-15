@@ -1,2 +1,4 @@
 /node_modules
 /public/csv/*.csv
+.replit
+.nix

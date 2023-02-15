@@ -8,7 +8,7 @@ class Status extends API {
     }
 
     async request(req, res) {
-        res.send("OK");
+        return res.send("OK");
     }
 }
 
