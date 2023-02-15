@@ -6,7 +6,7 @@ const WEB_INSTANCE = new WEB();
 WEB_INSTANCE.deploy();
 
 const TESTS = require("./tests");
-const spotify = new TESTS(process.env.OAuth1);
+const spotify = new TESTS(CONFIG.test.auth);
 
 async function test() {
 	let user = await spotify.get_user_info();

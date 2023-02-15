@@ -26,7 +26,7 @@ class CSVParser extends API {
 
 		console.log(req.query.auth)
 
-		fs.readFile("./public/csv/" + req.query.fileName + ".csv", function(err, content) {
+		fs.readFile("./public/csv/" + req.query.fileName + ".csv", async function(err, content) {
 			if(err)
 				return res.status(400).send("File does not exist");
 
@@ -52,7 +52,9 @@ class CSVParser extends API {
 
 				// run songs through the spotify api \\
 				for(var x = 0; x < songs.length; x++) {
-					spotify.get_track_by_name(songs[x][0], songs[x][1])
+					let track = await spotify.get_track_by_name(songs[x][0], songs[x][1]);
+
+					returnedArr.push(track);
 				}
 				
 				return res.status(200).send(returnedArr);
